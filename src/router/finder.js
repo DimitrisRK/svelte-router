@@ -135,8 +135,9 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
     let route;
     if (custom404Page) {
       route = { ...custom404Page, language, path: '404' };
-      if (route.redirectTo) {
-        route.redirectTo = RouterRedirect(route, redirectTo).path();
+      redirectTo = RouterRedirect(route, redirectTo).path();
+      if (redirectTo) {
+        route.redirectTo = redirectTo;
       }
     } else {
       route = { name: '404', component: '', path: '404', redirectTo: NotFoundPage };
