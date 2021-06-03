@@ -132,11 +132,16 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
   const routeNotFound = (customLanguage) => {
     const custom404Page = routes.find((route) => route.name == '404');
     const language = customLanguage || defaultLanguage || '';
+    let route;
     if (custom404Page) {
-      return { ...custom404Page, language, path: '404' };
+      route = { ...custom404Page, language, path: '404' };
+      if (route.redirectTo) {
+        route.redirectTo = RouterRedirect(route, redirectTo).path();
+      }
     } else {
-      return { name: '404', component: '', path: '404', redirectTo: NotFoundPage };
+      route = { name: '404', component: '', path: '404', redirectTo: NotFoundPage };
     }
+    return route;
   };
 
   return Object.freeze({ findActiveRoute });
